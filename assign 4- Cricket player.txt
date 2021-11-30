@@ -1,0 +1,161 @@
+/* Name=Anvita Bamboriya
+   Roll no=SYITA107
+Problem statement:-
+Write a Menu driven program in C for a cricket player’s display board. The information of the cricketer can be (not limited to) Name, Age, Country, Category (Batsman, Bowler, Wicket keeper, All-rounder), Number of ODI’s played, Number of International 20-20’s played. Display following.
+a) Number of batsman of a particular country 
+b) Sort the Batsman as per the average batting score(Bubble/insertion     sort)
+c) Batsman with highest average score (Binary search)
+d) Number of bowlers of a particular country 
+e) The bowler that has taken a maximum no of wickets 
+f) Show players entire “Display board information”*/
+
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+struct details
+{
+  char name[20],country[20],category[20];
+  int age,runs,wickets,odi_played,t20_played;
+  float avg_score;
+}player[20];
+
+
+int main(void)
+{
+ int n,ch,i,j,count,swap,max,index;
+ char country[50];
+
+ printf("Enter the number of players:");
+ scanf("%d",&n);
+
+ for(int i=0;i<n;i++)
+ {
+   printf("\nDetails of player %d:",i);
+   printf("\nName:");
+   scanf("%s",player[i].name);
+   printf("Age:");
+   scanf("%d",&player[i].age);
+   printf("Country:");
+   scanf("%s",player[i].country);
+   printf("Category:");
+   scanf("%s",player[i].category);
+   printf("Runs:");
+   scanf("%d",&player[i].runs);
+   printf("Wickets:");
+   scanf("%d",&player[i].wickets);
+   printf("Average score:");
+   scanf("%f",&player[i].avg_score);
+   printf("Number of ODI's played:");
+   scanf("%d",&player[i].odi_played);
+   printf("Number of T20 played:");
+   scanf("%d",&player[i].t20_played);
+ }
+
+ do 
+ {
+ printf("\n\n-------------------------MENU-------------------------\n1.Number of batsman of a particular country.\n2.Sort the Batsman as per the average batting score.\n3.Batsman with highest average score.\n4.Number of bowlers of a particular country.\n5.The bowler that has taken a maximum no of wickets.\n6.Show a players the entire Display board Information.\n7.Exit.\n------------------------------------------------------");
+ 
+ printf("\n\nEnter choice: ");
+ scanf("%d",&ch);
+
+ switch(ch)
+ {
+   case 1: //number of batsman of a country
+   
+   count=0;
+    printf("\nEnter country to display number of batsman: ");
+    scanf("%s", country);
+    for(i=0; i<n; i++)
+    {
+        if((strcmp(country,player[i].country)==0)&&(strcmp("batsman",player[i].category)==0))
+        count++;
+    }
+      printf("\nNumber of batsman of %s country = %d ", country, count);
+   
+  break;
+  
+   case 2: //sorting batsman as per average score
+      
+      for(i=0;i<n-1;i++)
+      {
+        for(j=0;j<n-i-1;j++)
+        {
+          if(player[j].avg_score > player[j+1].avg_score)
+          {
+            swap=player[j].avg_score;
+            player[j]=player[j+1];
+            player[j+1].avg_score=swap;
+          }
+        }
+      }
+      printf("\nNAME\tCATEGORY\tAVG SCORE\tCOUNTRY");
+      for(i=0;i<n;i++)
+      {
+        printf("\n%s\t\t%s\t\t%f\t%s",player[i].name,player[i].category,player[i].avg_score,player[i].country);
+      }
+      break;
+
+   case 3: //batsman with highest avg score
+
+          max=player[0].avg_score;
+          count=0;
+          for(i=0;i<n;i++)
+          {
+            if(max<player[i].avg_score)
+            {
+              max=player[i].avg_score;
+              count=i;
+            }
+          }
+          printf("Batsman with highest average score: %s",player[count].name);
+          break;
+
+   case 4: //no of bowlers
+
+   count=0;
+    printf("\nEnter country to display number of bowler: ");
+    scanf("%s", country);
+    for(i=0; i<n; i++)
+    {
+        if((strcmp(country,player[i].country)==0)&&(strcmp("bowler",player[i].category)==0))
+        count++;
+    }
+      printf("\nNumber of bowler of %s country = %d ", country, count);
+    break;
+
+   case 5: //max no of wickets
+
+   count=0;
+   index=0;
+   for(i=0;i<n;i++)
+   {
+     if(strcmp("bowler",player[i].category)==0)
+     {
+       if(player[i].wickets>count)
+       {
+         count=player[i].wickets;
+         index=i;
+       }
+     }
+   }
+   printf("\nBowler who has taken maximum no of wickets is %s",player[index].name);
+   break;
+
+   case 6: //display info
+   
+   printf("\nNAME\tRUNS\tWICKETS\t\tAVERAGE SCORE\tCOUNTRY\t\tCATEGORY");
+   printf("\n---------------------------------------------------------------------");
+   for(int i=0;i<n;i++)
+   {
+     printf("\n%s\t\t%d\t\t%d\t\t\t%.2f\t\t\t%s\t\t%s",player[i].name,player[i].runs,player[i].wickets,player[i].avg_score,player[i].country,player[i].category);
+   }
+  break;
+ } 
+ }while(ch!=7);
+
+ if(ch==7)
+ {
+   printf("THANK-YOU!!");
+ }
+}
